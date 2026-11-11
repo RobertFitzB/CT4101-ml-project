@@ -15,9 +15,11 @@ See [data/README.md](data/README.md) for details. The data is downloaded by a sc
 ```
 notebooks/   numbered notebooks, run in order
   01_data_audit_and_baseline.ipynb   data audit, preprocessing, evaluation design, baselines (Milestone 2)
+  02_model_comparison.ipynb          data balancing, model comparison, error analysis, fairness check (Milestone 3)
 src/
   download_data.py   downloads bank-full.csv from UCI into data/raw/
   data.py            loading and feature preparation (drops duration and day)
+  modelling.py       pipeline with optional resampling, threshold selection, per-group error rates
 data/        dataset documentation (raw data is git-ignored)
 reports/     figures and the final report
 ```
@@ -48,7 +50,13 @@ Then run all cells from top to bottom. To run the whole notebook without opening
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_data_audit_and_baseline.ipynb
 ```
 
-Figures are saved to `reports/figures/`.
+The model comparison notebook is run the same way, after the data has been downloaded. It takes roughly 15 minutes on a 12-core laptop, as every model is tuned under every balancing technique:
+
+```
+jupyter nbconvert --to notebook --execute --inplace notebooks/02_model_comparison.ipynb
+```
+
+Figures are saved to `reports/figures/` and the results table to `reports/model_comparison.csv`.
 
 ## Evaluation design (summary)
 
@@ -57,6 +65,8 @@ Figures are saved to `reports/figures/`.
 - A stratified 80/20 train/test split is made with `random_state=42`. The test set is kept aside for the final comparison only.
 - Stratified 5-fold cross-validation is used on the training set, with all preprocessing inside a scikit-learn `Pipeline` to avoid leakage.
 - The main metric is PR-AUC, with ROC-AUC and F1 also reported.
+- Class weighting, random oversampling, random undersampling and SMOTE-NC are compared for every model. Resampling happens inside an `imblearn` `Pipeline`, so it only affects the training portion of each fold.
+- The decision threshold is tuned inside cross-validation. The test set has not been used so far and is reserved for the final comparison at Milestone 4.
 
 ## Assistance declaration
 

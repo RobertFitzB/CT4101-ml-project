@@ -13,3 +13,14 @@ The project question, dataset, models, metrics and evaluation design come from m
 **External code:** none apart from the documented libraries listed in `requirements.txt` (NumPy, pandas, scikit-learn, Matplotlib, Jupyter).
 
 **Collaboration:** none.
+
+## Milestone 3: Model Comparison Checkpoint
+
+**Generative AI / coding assistants:** Claude Code (Anthropic, Claude Opus 5.5) was used to:
+- help write the python code for the Milestone 3 notebook and `src/modelling.py` (data balancing comparison, model tuning, threshold selection, error analysis and age-group fairness check), together with the explanatory text and the README updates;
+
+The models, metrics and evaluation design come from my Milestone 1 proposal, and the decision to investigate data balancing comes from the feedback I received on Milestone 2. I have reviewed, run and checked all of the assisted code and text, and I can explain every step.
+
+**External code:** none apart from the documented libraries listed in `requirements.txt`, which now also includes imbalanced-learn.
+
+**Collaboration:** none.

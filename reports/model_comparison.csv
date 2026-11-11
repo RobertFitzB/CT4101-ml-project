@@ -1,0 +1,7 @@
+Model,Balancing,Main settings,PR-AUC,ROC-AUC,F1 at 0.5,F1 tuned,Threshold
+Majority class (baseline),n/a,always predicts no,0.117 ± 0.000,0.500 ± 0.000,0.000 ± 0.000,n/a,n/a
+Logistic regression (baseline),No balancing,defaults,0.402 ± 0.008,0.764 ± 0.003,0.277 ± 0.012,0.437 ± 0.004,0.189
+kNN,Random oversampling,"n_neighbors=151, weights=uniform",0.384 ± 0.011,0.758 ± 0.005,0.376 ± 0.005,0.420 ± 0.010,0.641
+Decision tree,No balancing,"max_depth=20, min_samples_leaf=100",0.393 ± 0.008,0.754 ± 0.008,0.279 ± 0.019,0.453 ± 0.009,0.259
+Random forest,No balancing,"max_depth=14, min_samples_leaf=5",0.432 ± 0.014,0.787 ± 0.006,0.281 ± 0.011,0.467 ± 0.010,0.191
+Gradient boosting,No balancing,"learning_rate=0.03, max_iter=100, max_leaf_nodes=31",0.431 ± 0.010,0.787 ± 0.005,0.298 ± 0.009,0.467 ± 0.003,0.188
