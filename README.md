@@ -16,10 +16,11 @@ See [data/README.md](data/README.md) for details. The data is downloaded by a sc
 notebooks/   numbered notebooks, run in order
   01_data_audit_and_baseline.ipynb   data audit, preprocessing, evaluation design, baselines (Milestone 2)
   02_model_comparison.ipynb          data balancing, model comparison, error analysis, fairness check (Milestone 3)
+  03_final_evaluation.ipynb          calibration, ablation, test-set evaluation, fairness on the test set, permutation importance (Milestone 4)
 src/
   download_data.py   downloads bank-full.csv from UCI into data/raw/
   data.py            loading and feature preparation (drops duration and day)
-  modelling.py       pipeline with optional resampling, threshold selection, per-group error rates
+  modelling.py       pipeline with optional resampling, threshold selection, bootstrap confidence intervals, per-group error rates
 data/        dataset documentation (raw data is git-ignored)
 reports/     figures and the final report
 ```
@@ -56,7 +57,13 @@ The model comparison notebook is run the same way, after the data has been downl
 jupyter nbconvert --to notebook --execute --inplace notebooks/02_model_comparison.ipynb
 ```
 
-Figures are saved to `reports/figures/` and the results table to `reports/model_comparison.csv`.
+The final evaluation notebook takes about 2 minutes. It fixes the settings chosen in notebook 02 rather than tuning again, and it is the only notebook that uses the test set:
+
+```
+jupyter nbconvert --to notebook --execute --inplace notebooks/03_final_evaluation.ipynb
+```
+
+Figures are saved to `reports/figures/`, the cross-validation results to `reports/model_comparison.csv` and the test results to `reports/test_results.csv`.
 
 ## Evaluation design (summary)
 
@@ -66,7 +73,21 @@ Figures are saved to `reports/figures/` and the results table to `reports/model_
 - Stratified 5-fold cross-validation is used on the training set, with all preprocessing inside a scikit-learn `Pipeline` to avoid leakage.
 - The main metric is PR-AUC, with ROC-AUC and F1 also reported.
 - Class weighting, random oversampling, random undersampling and SMOTE-NC are compared for every model. Resampling happens inside an `imblearn` `Pipeline`, so it only affects the training portion of each fold.
-- The decision threshold is tuned inside cross-validation. The test set has not been used so far and is reserved for the final comparison at Milestone 4.
+- The decision threshold is chosen once, by best F1 on the pooled out-of-fold predictions of the training set.
+- The test set is used once, in notebook 03, after every model setting and threshold was fixed. Nothing is tuned on it. Uncertainty is shown with 1,000 bootstrap resamples of the test set.
+
+## Final results
+
+The final model is a random forest (300 trees, `max_depth=14`, `min_samples_leaf=5`, no resampling) with a decision threshold of 0.193.
+
+| Model | Test PR-AUC (95% CI) |
+|---|---|
+| Majority class | 0.117 |
+| Logistic regression (baseline) | 0.411 (0.380 to 0.446) |
+| Random forest (final) | 0.444 (0.413 to 0.476) |
+| Gradient boosting | 0.450 (0.418 to 0.484) |
+
+The random forest beats the logistic regression baseline in every bootstrap resample. It cannot be separated from gradient boosting, and it was chosen before the test set was opened. Its probabilities are well calibrated, but clients aged 60 and over have a false positive rate of 0.61, against 0.05 to 0.07 for ages 30 to 59. Notebook 03 and the final report discuss this limitation in full.
 
 ## Assistance declaration
 

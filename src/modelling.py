@@ -62,6 +62,23 @@ def cross_fitted_decisions(y_true, oof_proba, folds):
     return decisions, np.array(thresholds), np.array(fold_f1)
 
 
+def bootstrap_scores(y_true, values, metric, n_boot=1000, random_state=42):
+    """Recompute a metric on bootstrap resamples of the rows, for confidence intervals.
+
+    values can be probabilities (for PR-AUC) or yes/no decisions (for F1 or recall).
+    The same random_state always draws the same resamples, so two models scored
+    with it are compared on identical resamples, which makes their difference paired.
+    """
+    y_true, values = np.asarray(y_true), np.asarray(values)
+    rng = np.random.default_rng(random_state)
+    n = len(y_true)
+    scores = []
+    for _ in range(n_boot):
+        idx = rng.integers(0, n, n)
+        scores.append(metric(y_true[idx], values[idx]))
+    return np.array(scores)
+
+
 def slice_metrics(y_true, decisions, groups):
     """Error rates for each group, used for the error analysis and fairness check."""
     # Categorical keeps an ordered grouping (such as age bands) in its natural order
