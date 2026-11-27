@@ -78,9 +78,9 @@ Its probabilities are well calibrated. The mean predicted probability (0.117) ma
 
 **Test results.** Figure 1 and the table below show the results on the held-out test set.
 
-![Test PR-AUC with 95% bootstrap intervals for each model](figures/test_results.png)
+![Precision-recall curves on the test set and the confusion matrix of the random forest](figures/test_results.png)
 
-*Figure 1. Test-set PR-AUC with 95% bootstrap intervals.*
+*Figure 1. Precision-recall curves of every model on the test set (left) and the confusion matrix of the random forest at a threshold of 0.193 (right).*
 
 | Model | Test PR-AUC (95% CI) | CV PR-AUC | ROC-AUC | F1 |
 |---|---|---|---|---|

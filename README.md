@@ -57,7 +57,7 @@ The model comparison notebook is run the same way, after the data has been downl
 jupyter nbconvert --to notebook --execute --inplace notebooks/02_model_comparison.ipynb
 ```
 
-The final evaluation notebook takes about 2 minutes. It fixes the settings chosen in notebook 02 rather than tuning again, and it is the only notebook that uses the test set:
+The final evaluation notebook takes about 3 minutes. It fixes the settings chosen in notebook 02 rather than tuning again, and it is the only notebook that uses the test set:
 
 ```
 jupyter nbconvert --to notebook --execute --inplace notebooks/03_final_evaluation.ipynb
