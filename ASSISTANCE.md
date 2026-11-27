@@ -30,7 +30,7 @@ The models, metrics and evaluation design come from my Milestone 1 proposal, and
 **Generative AI / coding assistants:** Claude Code (Anthropic, Claude Opus 5.5) was used to:
 - help write the python code for the Milestone 4 notebook and the `bootstrap_scores` helper in `src/modelling.py` (fixed model settings, decision thresholds, calibration check, age and month ablation, test-set evaluation with bootstrap confidence intervals, age-group fairness on the test set and permutation importance);
 - draft the interpretation text in the notebook from the results, which I then reviewed and edited;
-- create a structure for the final report from my notebooks and decisions.
+- create a structure and initial draft for the final report from my notebooks and decisions.
 
 The models, metrics and evaluation design still come from my Milestone 1 proposal and the earlier checkpoints. I have reviewed, run and checked all of the assisted code and text, the interpretation is my own and I can explain every step.
 
